@@ -1,23 +1,5 @@
 import { PaginationReqType } from '@/app/callback/SearchArtist';
 
-const PaginationContainer = styled.ul`
-  ${flexboxContainer({})}
-  gap: 20px;
-  list-style: none;
-
-  button {
-    border: none;
-    padding: 15px;
-    border-radius: 15px;
-    cursor: pointer;
-
-    &.activePage {
-      background-color: black;
-      color: white;
-    }
-  }
-`
-
 interface PaginationProps {
   paginationReq: PaginationReqType;
   getItemId: (paginationUrl: number | null) => void;
@@ -44,12 +26,15 @@ export default function Pagination({paginationReq, getItemId}: PaginationProps) 
   if (!paginationReq.isActive) return null;
 
   return(
-    <PaginationContainer>
+    <ul
+      className="flex justify-center items-center gap-5 list-none"
+    >
       <li>
-        <button 
+        <button
+          className="border-none p-4 rounded-2xl cursor-pointer"
           disabled={current === 1}
           onClick={(e) => onPageChange(current - 1)}
-        >Anterior</button>
+        >Prev</button>
       </li>
 
       {Array.from({ length: Math.min(MAX_ITEMS, pages) })
@@ -58,7 +43,7 @@ export default function Pagination({paginationReq, getItemId}: PaginationProps) 
           <li key={`pagination-key-${page}`}>
             <button
               onClick={() => onPageChange(page)}
-              className={page === current ? "activePage" : ''}
+              className={`border-none p-4 rounded-2xl cursor-pointer ${page === current ? "bg-slate-950 text-white" : ""}`}
             >{page}
             </button>
           </li>
@@ -66,11 +51,12 @@ export default function Pagination({paginationReq, getItemId}: PaginationProps) 
       }
 
       <li>
-        <button 
+        <button
+          className="border-none p-4 rounded-2xl cursor-pointer"
           onClick={(e) => onPageChange(current + 1)}
           disabled={current === pages} 
-        >Próxima</button>
+        >Next</button>
       </li>
-    </PaginationContainer>
+    </ul>
   )
 };
